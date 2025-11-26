@@ -1,0 +1,50 @@
+import { useState } from "react";
+
+export default function LessonModal({ lesson, allParticipants, onClose, onSave, onDelete, onAddParticipant, onRemoveParticipant }) {
+  const [date, setDate] = useState(lesson.date);
+  const [startTime, setStartTime] = useState(lesson.start_time || "10:00");
+
+  const participantsInLesson = lesson.participants.map(p => p.id);
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-5 rounded shadow-lg w-full max-w-md">
+        <h2 className="text-xl mb-3">Lezione {lesson.id}</h2>
+
+        <div className="mb-3">
+          <label>Data:</label>
+          <input type="date" value={date} onChange={e => setDate(e.target.value)} className="border p-1 rounded w-full"/>
+        </div>
+
+        <div className="mb-3">
+          <label>Ora inizio:</label>
+          <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} className="border p-1 rounded w-full"/>
+        </div>
+
+        <div className="mb-3">
+          <label>Partecipanti:</label>
+          <ul className="mb-2">
+            {lesson.participants.map(p => (
+              <li key={p.id} className="flex justify-between items-center">
+                {p.name} {p.surname} 
+                <button className="text-red-500" onClick={() => onRemoveParticipant(lesson.id, p.id)}>Rimuovi</button>
+              </li>
+            ))}
+          </ul>
+          <select onChange={e => { const pid = parseInt(e.target.value); if(pid) onAddParticipant(lesson.id, pid); }} className="border p-1 rounded w-full">
+            <option value="">Aggiungi partecipante</option>
+            {allParticipants.filter(p => !participantsInLesson.includes(p.id)).map(p => (
+              <option key={p.id} value={p.id}>{p.name} {p.surname}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex justify-end gap-2">
+          <button className="bg-gray-500 text-white px-3 py-1 rounded" onClick={onClose}>Chiudi</button>
+          <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => onDelete(lesson.id)}>Elimina</button>
+          <button className="bg-blue-600 text-white px-3 py-1 rounded" onClick={() => onSave({ ...lesson, date, start_time: startTime })}>Salva</button>
+        </div>
+      </div>
+    </div>
+  );
+}

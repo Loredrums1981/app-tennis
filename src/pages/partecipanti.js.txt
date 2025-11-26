@@ -1,0 +1,75 @@
+import { useEffect, useState } from 'react';
+import { fetchParticipants } from '../services/participants';
+import { fetchLessons, fetchLessonParticipantsRaw } from '../services/lessons';
+
+export default function Partecipanti() {
+  const [participants, setParticipants] = useState([]);
+  const [lessons, setLessons] = useState([]);
+
+  useEffect(() => {
+    loadAll();
+  }, []);
+
+  const loadAll = async () => {
+    try {
+      const [p, l, lpAll] = await Promise.all([
+        fetchParticipants(),
+        fetchLessons(),
+        fetchLessonParticipantsRaw()
+      ]);
+
+      setLessons(l);
+
+      const updatedParticipants = p.map(part => {
+        const count = l.reduce((acc, lesson) => {
+          return acc + (lpAll.find(x => x.lesson_id === lesson.id && x.participant_id === part.id) ? 1 : 0);
+        }, 0);
+
+        return {
+          ...part,
+          lezioni_fatte: count,
+          lezioni_rimanenti: l.length - count,
+          costo_a_lezione_teorico: part.cost / 24,
+          costo_a_lezione_attuale: part.cost / (l.length || 1)
+        };
+      });
+
+      setParticipants(updatedParticipants);
+
+    } catch (err) {
+      console.error("Errore caricando dati partecipanti:", err);
+    }
+  };
+
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <h1>Partecipanti</h1>
+      <table border="1" cellPadding="8" style={{ borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Costo pagato</th>
+            <th>Lezioni fatte</th>
+            <th>Lezioni rimanenti</th>
+            <th>Costo/lezione (teorico)</th>
+            <th>Costo/lezione (calendarizzate)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {participants.map(p => (
+            <tr key={p.id}>
+              <td>{p.name}</td>
+              <td>{p.surname}</td>
+              <td>{p.cost}€</td>
+              <td>{p.lezioni_fatte}</td>
+              <td>{p.lezioni_rimanenti}</td>
+              <td>{p.costo_a_lezione_teorico.toFixed(2)}€</td>
+              <td>{p.costo_a_lezione_attuale.toFixed(2)}€</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

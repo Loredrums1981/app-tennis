@@ -1,0 +1,17 @@
+/* FullCalendar styles necessari */
+@import "@fullcalendar/common/main.css";
+
+/* Tailwind base/components/utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Eventuali personalizzazioni globali */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+}

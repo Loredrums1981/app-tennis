@@ -1,0 +1,110 @@
+/* --- Base --- */
+.container {
+  padding: 20px;
+  font-family: "Inter, Arial, sans-serif";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  margin-top: 20px;
+  width: 100%;
+  max-width: 450px;
+}
+
+.input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 14px;
+}
+
+.button {
+  background: #1976d2;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background: #125aa3;
+}
+
+.sectionTitle {
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.participantsList {
+  margin-top: 20px;
+  padding-left: 20px;
+}
+
+.participantItem {
+  margin-bottom: 6px;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .card {
+    width: 90%;
+    padding: 16px;
+  }
+
+  .input {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .button {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .input {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .button {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .participantsList {
+    padding-left: 15px;
+  }
+}

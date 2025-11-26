@@ -1,0 +1,23 @@
+import '../styles/globals.css';
+import Navbar from '../components/Navbar';
+import { AuthProvider } from '@/context/AuthContext';
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <Navbar />
+      <div className="pt-20">
+        {/* Spazio per evitare che la navbar fissa copra i contenuti */}
+        <Component {...pageProps} />
+      </div>
+    </>
+  );
+}
+
+export default function App({ Component, pageProps }) {
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
+  );
+}

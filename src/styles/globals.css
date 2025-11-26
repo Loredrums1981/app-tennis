@@ -1,0 +1,128 @@
+/* FullCalendar styles necessari (common) */
+@import "@fullcalendar/common/main.css";
+
+/* Tailwind base/components/utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Global theme / Apple-like --- */
+:root{
+  --bg:#f8f9fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#007aff;
+  --accent-600:#0066dd;
+  --shadow: 0 6px 20px rgba(16,24,40,0.08);
+}
+
+html,body,#__next{
+  height:100%;
+}
+
+body {
+  background-color: var(--bg);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin:0;
+  color:#0f172a;
+}
+
+/* Page container spacing */
+.app-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.page-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: 18px;
+}
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Two-column layout */
+.calendar-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+/* Sidebar */
+.sidebar h3 {
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.lesson-list { list-style:none; padding:0; margin:0; }
+.lesson-item {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:10px;
+  border-radius:10px;
+  transition: background .12s, transform .08s;
+}
+.lesson-item:hover { background: #f1f5f9; transform: translateY(-1px); }
+.lesson-item .meta { color: var(--muted); font-size: 0.875rem; }
+
+/* Event pills (improve FullCalendar event look) */
+.fc .fc-daygrid-event {
+  border: none;
+  box-shadow: none;
+  background: var(--accent);
+  border-radius: 12px;
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  color: white;
+  opacity: 0.98;
+}
+.fc .fc-daygrid-event .fc-event-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Past event */
+.fc .fc-daygrid-event.past-event {
+  background: #94a3b8 !important;
+  border-color: #8b949e !important;
+  opacity: 0.95;
+}
+
+/* Toolbar buttons */
+.fc .fc-button {
+  border-radius: 10px;
+  border: none;
+  background: #f3f4f6;
+  color: #0f172a;
+  padding: 6px 10px;
+  font-weight: 600;
+}
+.fc .fc-button-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.fc .fc-button:hover { filter: brightness(.98); }
+
+/* Modal tweaks (fallback styles if modal uses simple markup) */
+.modal-backdrop { background: rgba(2,6,23,0.45); position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:60; }
+.modal-card { background:var(--card); border-radius:12px; padding:18px; width:100%; max-width:520px; box-shadow: var(--shadow); border:1px solid rgba(15,23,42,0.04); }
+
+/* small screens */
+@media (max-width: 900px) {
+  .calendar-layout { grid-template-columns: 1fr; }
+  .sidebar { order: 2; }
+}

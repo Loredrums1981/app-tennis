@@ -1,0 +1,71 @@
+import { useEffect, useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { fetchLessons } from "@/services/lessons";
+import { fetchParticipants } from "@/services/participants";
+
+export default function LessonCalendar() {
+  const [lessons, setLessons] = useState([]);
+  const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const lessonData = await fetchLessons();
+        const participantData = await fetchParticipants();
+
+        setLessons(lessonData);
+        setParticipants(participantData);
+      } catch (err) {
+        console.error("Errore caricamento calendario:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  if (loading) return <p>Caricamento calendario...</p>;
+
+  if (!lessons || lessons.length === 0)
+    return <p>Nessuna lezione programmata.</p>;
+
+  // 🔥 Crea gli eventi per il calendario
+  const events = lessons.map((lesson) => {
+    const lessonParticipants = participants.filter((p) =>
+      p.lessons?.includes(lesson.id)
+    );
+
+    const names =
+      lessonParticipants.length > 0
+        ? lessonParticipants.map((p) => p.name).join(", ")
+        : "Nessun partecipante";
+
+    return {
+      id: lesson.id,
+      title: `${lesson.title}\n${names}`,
+      start: lesson.date,
+      backgroundColor: "#1e90ff",
+      borderColor: "#1e90ff",
+      textColor: "white",
+    };
+  });
+
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4">Calendario Lezioni</h2>
+
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        height="auto"
+        events={events}
+        displayEventTime={false}
+      />
+    </div>
+  );
+}
